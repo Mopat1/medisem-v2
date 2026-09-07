@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MediSem — Hospital Knowledge Graph</title>
+<meta name="description" content="A hospital management system built on an OWL ontology and an RDF knowledge graph, with a comorbidity network measured from the patient population.">
+<meta name="color-scheme" content="light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'><circle cx='5' cy='19' r='3' fill='%230B6E4F'/><circle cx='13' cy='6' r='3' fill='%2312201E'/><circle cx='21' cy='19' r='3' fill='none' stroke='%232B5F91' stroke-width='1.7'/></svg>">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalOrganization",
+  "name": "MediSem Multispecialty Hospital",
+  "description": "A demonstration hospital management system whose records are stored as RDF and described by an OWL 2 ontology.",
+  "address": { "@type": "PostalAddress", "addressLocality": "Chennai", "addressRegion": "Tamil Nadu", "addressCountry": "IN" }
+}
+</script>
+</head>
+<body>
+
+<!-- The graph takes a moment to parse and reason on first load. -->
+<div id="splash">
+  <svg class="splash-mark" viewBox="0 0 26 26" aria-hidden="true">
+    <line x1="5" y1="19" x2="13" y2="6" stroke="#4FBF95" stroke-width="1.4"/>
+    <line x1="13" y1="6" x2="21" y2="19" stroke="#7FA9D0" stroke-width="1.4"/>
+    <circle cx="5" cy="19" r="3" fill="#4FBF95"/>
+    <circle cx="13" cy="6" r="3" fill="#EAF0EE"/>
+    <circle cx="21" cy="19" r="3" fill="none" stroke="#7FA9D0" stroke-width="1.7"/>
+  </svg>
+  <div class="splash-name">MediSem</div>
+  <div class="splash-bar"><span></span></div>
+  <div id="boot-status">Starting</div>
+</div>
+
+<div id="root"></div>
+
+<div id="drawer-scrim"></div>
+<aside id="drawer" aria-label="Provenance"></aside>
+<div id="toasts" aria-live="polite"></div>
+
+<noscript>
+  <div style="padding:40px;font-family:system-ui">
+    <h1>JavaScript is required</h1>
+    <p>This application parses an RDF graph and runs a reasoner in your browser, so it cannot work with scripting disabled.</p>
+  </div>
+</noscript>
+
+<!-- Load order matters: engine, then data, then model, then views, then boot. -->
+<script src="assets/rdf.js"></script>
+<script src="assets/ontology.js"></script>
+<script src="assets/data-reference.js"></script>
+<script src="assets/data-cohort.js"></script>
+<script src="assets/db.js"></script>
+<script src="assets/api.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/queries.js"></script>
+<script src="assets/comorbidity.js"></script>
+<script src="assets/view-graph.js"></script>
+<script src="assets/view-population.js"></script>
+<script src="assets/view-semantic.js"></script>
+<script src="assets/view-auth.js"></script>
+<script src="assets/view-explore.js"></script>
+<script src="assets/view-booking.js"></script>
+<script src="assets/view-patient.js"></script>
+<script src="assets/view-doctor.js"></script>
+<script src="assets/view-staff.js"></script>
+
+<script>
+document.getElementById('drawer-scrim').addEventListener('click', App.closeProvenance);
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') App.closeProvenance();
+});
+App.boot().catch(function (err) {
+  document.getElementById('splash').innerHTML =
+    '<div style="max-width:560px;padding:24px;color:#EAF0EE;font-family:system-ui">' +
+    '<h2 style="font-family:inherit">The knowledge graph could not be built</h2>' +
+    '<pre style="white-space:pre-wrap;font-size:12px;color:#9FB2AE">' +
+    String((err && err.stack) || err).replace(/</g, '&lt;') + '</pre></div>';
+});
+</script>
+</body>
+</html>

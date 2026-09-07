@@ -1,0 +1,25 @@
+# Render Blueprint. Use New -> Blueprint and point it at this repository, or
+# configure a Web Service by hand using the values in README.md.
+databases:
+  - name: medisem-v2-db
+    databaseName: medisem
+    user: medisem-v2
+    plan: free
+
+services:
+  - type: web
+    name: medisem-v2
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: medisem-v2-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
