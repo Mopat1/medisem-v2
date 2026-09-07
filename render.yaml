@@ -3,7 +3,7 @@
 databases:
   - name: medisem-v2-db
     databaseName: medisem
-    user: medisem-v2
+    user: medisem_v2
     plan: free
 
 services:
